@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -8,6 +9,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Register from "./Register.js";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);

@@ -5,6 +5,7 @@
 @import url(../blocks/elements.css);
 @import url(../blocks/footer.css);
 @import url(../blocks/popup.css);
+@import url(../blocks/register.css);
 .page {
     margin: 0 auto;
     font-family: "Inter", Arial, sans-serif;
