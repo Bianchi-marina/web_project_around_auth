@@ -1,4 +1,6 @@
-.register {
+/* Login.css */
+
+.login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,20 +9,20 @@
   margin-top: 60px;
 }
 
-.register__welcome {
+.login__welcome {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: 900;
 }
 
-.register__form {
+.login__form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 360px;
 }
 
-.register__input {
+.login__input {
   width: 100%;
   padding: 8px;
   padding-top: 20px; 
@@ -34,17 +36,17 @@
   font-weight: 400;
 }
 
-.register__input:focus {
+.login__input:focus {
   outline: none; 
 }
 
-.register__button-container {
+.login__button-container {
   display: flex;
   justify-content: center;
   margin-top: 216px;
 }
 
-.register__button {
+.login__button {
   width: 360px;
   background-color: white;
   color: black;
@@ -56,11 +58,11 @@
   font-weight: 400;
 }
 
-.register__button:hover {
+.login__button:hover {
   background-color: #e0e0e0;
 }
 
-.register__signin {
+.login__signin {
   margin: 0;
   color: white;
   font-size: 14px;

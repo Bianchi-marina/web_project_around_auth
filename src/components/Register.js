@@ -1,69 +1,85 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import auth from '../utils/auth';
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import * as auth from "../utils/auth";
 
-const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const history = useHistory();
+class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-  const handleSubmit = async (e) => {
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  handleSubmit(e) {
     e.preventDefault();
-    try {
-      const response = await auth.register(email, password);
-      if (response && response.token) {
-        localStorage.setItem('jwt', response.token);
-        history.push('/signin');
-      } else {
-        console.error('Erro ao registrar. Verifique suas credenciais.');
-      }
-    } catch (error) {
-      console.error('Erro ao registrar:', error);
+    const { email, password } = this.state;
+    if (email && password) {
+      auth
+        .register(email, password)
+        .then((res) => {
+          if (res) {
+            this.props.history.push("/singin");
+          } else {
+            console.log("Something went wrong.");
+          }
+        })
+        .catch((error) => {
+          console.error("Registration error:", error);
+        });
     }
-  };
+  }
 
-  return (
-    <div className="register">
-      <p className="register__welcome">Inscrever-se</p>
-      <form onSubmit={handleSubmit} className="register__form">
-        <label htmlFor="email" className="register__label">
-          E-mail
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="register__input"
-          required
-        />
-        <label htmlFor="password" className="register__label">
-          Senha
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="register__input"
-          required
-        />
-        <div className="register__button-container">
-          <button type="submit" className="register__button">
-            Inscrever-se
-          </button>
-        </div>
-      </form>
-      <div className="register__signin">
-        <p className="register__signin-text">Já é um membro?</p>
-        <Link to="/signin" className="register__signin-link">
-          Faça login aqui!
-        </Link>
+  render() {
+    return (
+      <div className="register">
+        <p className="register__welcome">Inscrever-se</p>
+        <form onSubmit={this.handleSubmit} className="register__form">
+          <input
+            placeholder="E-mail"
+            id="email"
+            name="email"
+            type="email"
+            value={this.state.email}
+            onChange={this.handleChange}
+            className="register__input"
+          />
+
+          <input
+            placeholder="Senha"
+            id="password"
+            name="password"
+            type="password"
+            value={this.state.password}
+            onChange={this.handleChange}
+            className="register__input"
+          />
+
+          <div className="register__button-container">
+            <button type="submit" className="register__button">
+              Inscrever-se
+            </button>
+          </div>
+        </form>
+
+        <p className="register__signin">
+          Já é um membro?{" "}
+          <Link className="link" to="/signin">
+            Faça o Login aqui!
+          </Link>
+        </p>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default Register;
+export default withRouter(Register);

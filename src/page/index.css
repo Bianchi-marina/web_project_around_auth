@@ -6,6 +6,8 @@
 @import url(../blocks/footer.css);
 @import url(../blocks/popup.css);
 @import url(../blocks/register.css);
+@import url(../blocks/login.css);
+@import url(../blocks/infoToolTip.css);
 .page {
     margin: 0 auto;
     font-family: "Inter", Arial, sans-serif;

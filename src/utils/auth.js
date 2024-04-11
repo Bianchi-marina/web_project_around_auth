@@ -1,83 +1,71 @@
-class Auth {
-  constructor({ baseUrl, headers }) {
-    this._baseUrl = baseUrl;
-    this._headers = headers;
-  }
+const BASE_URL = 'https://register.nomoreparties.co';
 
-  register(email, password) {
-    return fetch(`${this._baseUrl}/signup`, {
+export const register = async (email, password) => {
+  try {
+    const response = await fetch(`${BASE_URL}/signup`, {
       method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify({ email, password }),
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro ao registrar usuário');
-      }
-      return response.json();
-    })
-    .catch(err => {
-      throw new Error(err.message || 'Erro ao registrar usuário');
-    });
-  }
-
-  login(email, password) {
-    return fetch(`${this._baseUrl}/signin`, {
-      method: 'POST',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ email, password })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Credenciais inválidas');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
-      }
-      return data;
-    })
-    .catch(err => {
-      throw new Error(err.message || 'Erro ao fazer login');
     });
-  }
 
-  checkToken(token) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    return data.data; 
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};
+
+export const authorize = async (email, password) => {
+  try {
+    const response = await fetch(`${BASE_URL}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+
+    const { token } = await response.json(); 
+    localStorage.setItem('jwt', token); 
+  } catch (error) {
+    console.error('Authorization error:', error);
+    throw error;
+  }
+};
+
+
+export const checkToken = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
       headers: {
-        ...this._headers,
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Token inválido');
-      }
-      return response.json();
-    })
-    .catch(err => {
-      throw new Error(err.message || 'Erro ao verificar token');
     });
-  }
 
-  logout() {
-    localStorage.removeItem('jwt');
-  }
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
 
-  isLoggedIn() {
-    return !!localStorage.getItem('jwt');
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Token verification error:', error);
+    throw error;
   }
-}
-
-const auth = new Auth({
-  baseUrl: "https://register.nomoreparties.co",
-  headers: {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-  }
-});
-
-export default auth;
+};
