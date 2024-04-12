@@ -37,7 +37,10 @@ class Register extends React.Component {
             isSuccess: true,
             message: "Vitória! Você precisa se registrar."
           });
-          this.props.history.push("/signin");
+          setTimeout(() => {
+            this.props.history.push("/signin");
+          }, 1500);
+          
         })
         .catch((error) => {
           console.error("Erro de registro:", error);

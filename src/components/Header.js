@@ -1,8 +1,12 @@
 import React from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory,  useLocation } from "react-router-dom";
 
 function Header({ loggedIn, userEmail, handleLogout }) {
   const history = useHistory();
+  const location = useLocation();
+  
+  const isSignInPage = location.pathname === "/signup";
+  const isSignUpPage = location.pathname === "/signin";
 
   const signOut = () => {
     handleLogout();
@@ -11,20 +15,19 @@ function Header({ loggedIn, userEmail, handleLogout }) {
   };
 
   const RenderMenuItems = () => {
-    if (!loggedIn) {
-    
+    if (isSignInPage) {
       return (
-        <>
-          <NavLink className="menu__item" activeClassName="menu__item_active" to="/signin">
-            Entrar
-          </NavLink>
-          <NavLink className="menu__item" activeClassName="menu__item_active" to="/signup">
-            Faça o Login
-          </NavLink>
-        </>
+        <NavLink className="menu__item" activeClassName="menu__item_active" to="/signin">
+          Entrar
+        </NavLink>
       );
-    } else {
-    
+    } else if (isSignUpPage) {
+      return (
+        <NavLink className="menu__item" activeClassName="menu__item_active" to="/signup">
+          Faça o login
+        </NavLink>
+      );
+    } else if (loggedIn) {
       return (
         <>
           <span className="menu__item">{userEmail}</span>
@@ -34,6 +37,8 @@ function Header({ loggedIn, userEmail, handleLogout }) {
         </>
       );
     }
+    
+    return null; 
   };
 
   return (

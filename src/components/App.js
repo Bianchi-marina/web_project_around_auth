@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
 } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
@@ -27,8 +26,10 @@ function App() {
   const [selectedCard, setselectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({ name: "", about: "" });
   const [cards, setCards] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem("loggedIn") ? true : false
+  );
+  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -37,7 +38,7 @@ function App() {
         .checkToken(token)
         .then(() => {
           setLoggedIn(true);
-          setUserEmail();
+          setUserEmail(localStorage.getItem("userEmail"));
         })
         .catch((error) => {
           console.error("Erro ao verificar token:", error);
@@ -63,18 +64,16 @@ function App() {
   const handleLogin = (email) => {
     setLoggedIn(true);
     setUserEmail(email);
-    localStorage.setItem('loggedIn', 'true');
-    localStorage.setItem('userEmail', email);
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userEmail", email);
   };
-  
 
   const handleLogout = () => {
     setLoggedIn(false);
-    setUserEmail('');
-    localStorage.removeItem('loggedIn');
-    localStorage.removeItem('userEmail');
+    setUserEmail("");
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("userEmail");
   };
-  
 
   const handleUpdateUser = (userData) => {
     api
@@ -143,10 +142,9 @@ function App() {
             loggedIn={loggedIn}
             userEmail={userEmail}
             handleLogout={handleLogout}
-            // currentPage={window.location.pathname} 
           />
           <Switch>
-          <Route exact path="/">
+            <Route exact path="/">
               {loggedIn ? (
                 <Main
                   cards={cards}

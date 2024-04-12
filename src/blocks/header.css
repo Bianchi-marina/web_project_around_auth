@@ -13,22 +13,6 @@
     margin: 0;
   }
   
-
-  @media screen and (max-width: 970px) {
-    .header {
-      max-width: 600px;
-    }
-  }
-  
-  @media screen and (max-width: 660px) {
-    .header {
-      max-width: 320px;
-    }
-    .header__logo {
-      padding-left: 20px;
-    }
-  }
-  
   .menu__item {
     color: #fff;
     text-decoration: none;
@@ -47,14 +31,24 @@
   
   .menu__button {
     padding: 8px 16px;
+    background-color: transparent;
     border: none;
-    background-color: #dc3545;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+  }
+
+  @media screen and (max-width: 970px) {
+    .header {
+      max-width: 600px;
+    }
   }
   
-  .menu__button:hover {
-    background-color: #c82333;
+  @media screen and (max-width: 660px) {
+    .header {
+      max-width: 320px;
+    }
+    .header__logo {
+      padding-left: 20px;
+    }
   }
