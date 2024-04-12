@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Switch, Route, Redirect, useHistory} from "react-router-dom";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -22,17 +28,16 @@ function App() {
   const [currentUser, setCurrentUser] = useState({ name: "", about: "" });
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState({email: "" });
-  const history = useHistory();
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
       auth
         .checkToken(token)
-        .then((data) => {
+        .then(() => {
           setLoggedIn(true);
-          setUserEmail(data.email);
+          setUserEmail();
         })
         .catch((error) => {
           console.error("Erro ao verificar token:", error);
@@ -58,13 +63,18 @@ function App() {
   const handleLogin = (email) => {
     setLoggedIn(true);
     setUserEmail(email);
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('userEmail', email);
   };
+  
 
   const handleLogout = () => {
     setLoggedIn(false);
-    setUserEmail("");
-    localStorage.removeItem("jwt");
+    setUserEmail('');
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userEmail');
   };
+  
 
   const handleUpdateUser = (userData) => {
     api
@@ -132,16 +142,11 @@ function App() {
           <Header
             loggedIn={loggedIn}
             userEmail={userEmail}
-            onLogout={handleLogout}
+            handleLogout={handleLogout}
+            // currentPage={window.location.pathname} 
           />
           <Switch>
-            <Route path="/signup">
-              <Register />
-            </Route>
-            <Route path="/signin">
-              <Login onLogin={handleLogin} />
-            </Route>
-            <Route exact path="/">
+          <Route exact path="/">
               {loggedIn ? (
                 <Main
                   cards={cards}
@@ -155,6 +160,12 @@ function App() {
               ) : (
                 <Redirect to="/signin" />
               )}
+            </Route>
+            <Route path="/signup">
+              <Register />
+            </Route>
+            <Route path="/signin">
+              <Login handleLogin={handleLogin} />
             </Route>
             <ProtectedRoute path="/">
               {loggedIn ? (

@@ -1,13 +1,41 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
-function Header({ loggedIn, userEmail, onLogout }) {
-  //caminho do nav>>>>>>>
-  const location = useLocation();
-  const isSignInPage = location.pathname === "/signin";
-  const linkText = isSignInPage ? "Faça o Login" : "Entrar";
-  const linkPath = isSignInPage ? "/signup" : "/signin";
-  //>>>>>>>
+function Header({ loggedIn, userEmail, handleLogout }) {
+  const history = useHistory();
+
+  const signOut = () => {
+    handleLogout();
+    localStorage.removeItem('jwt');
+    history.push('/signin'); 
+  };
+
+  const RenderMenuItems = () => {
+    if (!loggedIn) {
+    
+      return (
+        <>
+          <NavLink className="menu__item" activeClassName="menu__item_active" to="/signin">
+            Entrar
+          </NavLink>
+          <NavLink className="menu__item" activeClassName="menu__item_active" to="/signup">
+            Faça o Login
+          </NavLink>
+        </>
+      );
+    } else {
+    
+      return (
+        <>
+          <span className="menu__item">{userEmail}</span>
+          <button onClick={signOut} className="menu__item menu__button">
+            Sair
+          </button>
+        </>
+      );
+    }
+  };
+
   return (
     <header className="header">
       <img
@@ -15,19 +43,8 @@ function Header({ loggedIn, userEmail, onLogout }) {
         src="./images/logo-vector.png"
         alt="Logo da página Around us"
       />
-     <nav className="header__nav">
-        {loggedIn && userEmail ? (
-          <>
-            <p>Bem vindo, {userEmail.email}</p>
-            <button onClick={onLogout}>Sair</button>
-          </>
-        ) : (
-          <>
-            <Link to={linkPath} className="header__link">
-              {linkText}
-            </Link>
-          </>
-        )}
+      <nav className="menu">
+        <RenderMenuItems />
       </nav>
     </header>
   );
