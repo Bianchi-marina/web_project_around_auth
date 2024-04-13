@@ -13,7 +13,7 @@
     margin: 0;
   }
   
-  .menu__item {
+  .header__item {
     color: #fff;
     text-decoration: none;
     padding: 10px;
@@ -21,15 +21,15 @@
     transition: opacity 0.3s ease;
   }
   
-  .menu__item:hover {
+  .header__item:hover {
     opacity: 0.8;
   }
   
-  .menu__item_active {
+  .header__item_active {
     font-weight: bold;
   }
   
-  .menu__button {
+  .header__button {
     padding: 8px 16px;
     background-color: transparent;
     border: none;

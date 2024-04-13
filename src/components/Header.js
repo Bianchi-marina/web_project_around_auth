@@ -17,21 +17,21 @@ function Header({ loggedIn, userEmail, handleLogout }) {
   const RenderMenuItems = () => {
     if (isSignInPage) {
       return (
-        <NavLink className="menu__item" activeClassName="menu__item_active" to="/signin">
+        <NavLink className="header__item" activeClassName="header__item_active" to="/signin">
           Entrar
         </NavLink>
       );
     } else if (isSignUpPage) {
       return (
-        <NavLink className="menu__item" activeClassName="menu__item_active" to="/signup">
+        <NavLink className="header__item" activeClassName="header__item_active" to="/signup">
           Faça o login
         </NavLink>
       );
     } else if (loggedIn) {
       return (
         <>
-          <span className="menu__item">{userEmail}</span>
-          <button onClick={signOut} className="menu__item menu__button">
+          <span className="header__item">{userEmail}</span>
+          <button onClick={signOut} className="header__item header__button">
             Sair
           </button>
         </>
