@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -29,7 +24,9 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("loggedIn") ? true : false
   );
-  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
+  const [userEmail, setUserEmail] = useState(
+    localStorage.getItem("userEmail") || ""
+  );
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -165,8 +162,10 @@ function App() {
             <Route path="/signin">
               <Login handleLogin={handleLogin} />
             </Route>
-            <ProtectedRoute path="/">
-              {loggedIn ? (
+            <ProtectedRoute
+              path="/"
+              isLoggedIn={isLoggedIn}
+              component={
                 <Main
                   cards={cards}
                   onEditAvatarClick={() => setEditAvatarPopupOpen(true)}
@@ -176,10 +175,8 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                 />
-              ) : (
-                <Redirect to="/signin" />
-              )}
-            </ProtectedRoute>
+              }
+            ></ProtectedRoute>
           </Switch>
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}

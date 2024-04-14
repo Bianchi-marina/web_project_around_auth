@@ -76,6 +76,7 @@ class Register extends React.Component {
               value={email}
               onChange={this.handleChange}
               className="register__input"
+              required
             />
 
             <input
@@ -86,6 +87,7 @@ class Register extends React.Component {
               value={password}
               onChange={this.handleChange}
               className="register__input"
+              required
             />
 
             <div className="register__button-container">
