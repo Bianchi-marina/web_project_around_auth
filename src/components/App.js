@@ -164,7 +164,7 @@ function App() {
             </Route>
             <ProtectedRoute
               path="/"
-              isLoggedIn={isLoggedIn}
+              loggedIn={loggedIn}
               component={
                 <Main
                   cards={cards}
