@@ -141,21 +141,6 @@ function App() {
             handleLogout={handleLogout}
           />
           <Switch>
-            <Route exact path="/">
-              {loggedIn ? (
-                <Main
-                  cards={cards}
-                  onEditAvatarClick={() => setEditAvatarPopupOpen(true)}
-                  onEditProfileClick={() => setEditProfilePopupOpen(true)}
-                  onAddPlaceClick={() => setAddPlacePopupOpen(true)}
-                  onCardClick={(card) => setselectedCard(card)}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
-                />
-              ) : (
-                <Redirect to="/signin" />
-              )}
-            </Route>
             <Route path="/signup">
               <Register />
             </Route>
@@ -165,7 +150,7 @@ function App() {
             <ProtectedRoute
               path="/"
               loggedIn={loggedIn}
-              component={
+              component={() => (
                 <Main
                   cards={cards}
                   onEditAvatarClick={() => setEditAvatarPopupOpen(true)}
@@ -175,7 +160,7 @@ function App() {
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                 />
-              }
+              )}
             ></ProtectedRoute>
           </Switch>
           <EditProfilePopup
